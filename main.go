@@ -50,6 +50,7 @@ func main() {
 	log.Info("Loaded config files:", cfgPath, customPath)
 
 	port, _ := cfg.Int("server", "port")
+
 	db, err := leveldb.OpenFile("./authperm.db", nil)
 	if err != nil {
 		fmt.Println(err)
@@ -106,11 +107,13 @@ func main() {
 	}
 
 	ftpName, _ := cfg.GetValue("server", "name")
+	passivePorts, _ := cfg.GetValue("server", "name")
 	opt := &server.ServerOpts{
-		Name:    ftpName,
-		Factory: factory,
-		Port:    port,
-		Auth:    auth,
+		Name:         ftpName,
+		Factory:      factory,
+		Port:         port,
+		Auth:         auth,
+		PassivePorts: passivePorts,
 	}
 
 	opt.TLS = cfg.MustBool("server", "tls", false)
